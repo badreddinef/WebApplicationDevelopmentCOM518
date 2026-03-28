@@ -4,8 +4,11 @@ import { db } from "./db";
 const app = express();
 app.use(express.json());
 
-app.get("/", (req, res)=> {
-    res.send("PlacesToStay API is running");
+app.get("/accommodation/:location", (req, res)=> {
+    const location = req.params.location; 
+    const stmt = db.prepare("SELECT * FROM accommodation WHERE location = ?")
+    const results = stmt.all(location);
+    res.json(results);
 });
 
 app.listen(3000, () => {
