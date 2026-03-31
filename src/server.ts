@@ -23,3 +23,14 @@ app.get("/accommodation/:type/:location", (req, res)=> {
 app.listen(3000, () => {
     console.log("Server running on http://localhost:3000")
 });
+ app.post("/bookaccommodation", (req, res)=>{
+    const accID = req.body.accID;
+    const npeople = req.body.npeople;
+    const thedate = req.body.thedate;
+    const  stmt = db.prepare("INSERT INTO acc_bookings (accID, thedate, userID, npeople) VALUES (?, ?, 1, ?)")
+    stmt.run(accID, thedate, npeople);
+    
+    const stmt2 = db.prepare("UPDATE acc_dates SET availability = availability - ? WHERE accID = ? AND thedate = ?");
+    stmt2.run(npeople, accID, thedate);
+    res.json({message: "booking successful"});
+ });
