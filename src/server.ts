@@ -1,5 +1,6 @@
 import express from "express";
 import { db } from "./db";
+import ViteExpress from 'vite-express';
 
 const app = express();
 app.use(express.json());
@@ -20,9 +21,8 @@ app.get("/accommodation/:type/:location", (req, res)=> {
 
 
 })
-app.listen(3000, () => {
-    console.log("Server running on http://localhost:3000")
-});
+
+ViteExpress.listen(app, 3000, () => console.log("Server running on http://localhost:3000"));
  app.post("/bookaccommodation", (req, res)=>{
     const accID = req.body.accID;
     const npeople = req.body.npeople;

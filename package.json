@@ -6,14 +6,22 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "tsx src/server.ts",
-  "keywords": []},
+    "keywords": []
+  },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
     "better-sqlite3": "^12.8.0",
     "express": "^5.2.1",
-    "sqlite3": "^6.0.1"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "sqlite3": "^6.0.1",
+    "vite": "^8.0.7",
+    "vite-express": "^0.22.1"
   },
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.13",
