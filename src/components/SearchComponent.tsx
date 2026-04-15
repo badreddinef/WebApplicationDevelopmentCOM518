@@ -30,8 +30,12 @@ async function book(accID: number) {
             thedate: 260601
         })
     });
-    const data = await response.json();
-    alert(data.message);
+     if (response.ok) {
+        alert("Booking successful!");
+    } else {
+        const data = await response.json();
+                alert(`Booking failed: ${data.error}`);
+    }
 }
 
 const resultsList = results.map(acc => (

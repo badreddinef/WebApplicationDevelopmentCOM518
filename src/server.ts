@@ -27,6 +27,10 @@ ViteExpress.listen(app, 3000, () => console.log("Server running on http://localh
     const accID = req.body.accID;
     const npeople = req.body.npeople;
     const thedate = req.body.thedate;
+    if (!accID || !npeople || !thedate) {
+        res.status(400).json({ error: "Missing accommodation or num of people or date " });
+        return;
+    }
     const  stmt = db.prepare("INSERT INTO acc_bookings (accID, thedate, userID, npeople) VALUES (?, ?, 1, ?)")
     stmt.run(accID, thedate, npeople);
     
