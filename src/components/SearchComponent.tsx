@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import MapComponent from './MapComponent';
 
 interface Accommodation {
     ID: number;
@@ -48,16 +49,17 @@ const resultsList = results.map(acc => (
     </div>
 ));
 return (
-        <div>
-            <h1>Places To Stay</h1>
-            <input 
-                type="text" 
-                value={location} 
-                onChange={(e) => setLocation(e.target.value)} 
-                placeholder="Enter location..."
-            />
-            <button onClick={search}>Search</button>
-            <div>{resultsList}</div>
-        </div>
-    );
+    <div>
+        <h1>Places To Stay</h1>
+        <input 
+            type="text" 
+            value={location} 
+            onChange={(e) => setLocation(e.target.value)} 
+            placeholder="Enter location..."
+        />
+        <button onClick={search}>Search</button>
+        <div>{resultsList}</div>
+        <MapComponent results={results} />
+    </div>
+);
 }
