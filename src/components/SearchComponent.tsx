@@ -18,10 +18,9 @@ export default function SearchComponent() {
     const [loginUsername, setLoginUsername] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
 
-
     useEffect(() => {
         async function checkLogin() {
-            const response = await fetch('/login');
+            const response = await fetch('/users/login');
             const data = await response.json();
             setUsername(data.username);
         }
@@ -35,7 +34,7 @@ export default function SearchComponent() {
     }
 
     async function login() {
-        const response = await fetch('/login', {
+        const response = await fetch('/users/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -53,11 +52,12 @@ export default function SearchComponent() {
     }
 
     async function logout() {
-        await fetch('/logout', { method: 'POST' });
+        await fetch('/users/logout', { method: 'POST' });
         setUsername(null);
     }
+
     async function book(accID: number) {
-        const response = await fetch('/bookaccommodation', {
+        const response = await fetch('/accommodation/book', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -72,7 +72,7 @@ export default function SearchComponent() {
             const data = await response.json();
             if (response.status === 401) {
                 alert('You must be logged in to book accommodation!');
-             } else {
+            } else {
                 alert(`Booking failed: ${data.error}`);
             }
         }
