@@ -62,6 +62,31 @@ app.post("/bookaccommodation", (req, res) => {
         return;
     }
 
+    const today = new Date();
+    const year = today.getFullYear() % 100;
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const todayNum = parseInt(`${year}${month}${day}`);
+
+    if (thedate < todayNum) {
+        res.status(400).json({ error: "Cannot book a date in the past" });
+        return;
+    }
+
+
+    const availStmt = db.prepare("SELECT availability FROM acc_dates WHERE accID = ? AND thedate = ?");
+    const availRow = availStmt.get(accID, thedate) as { availability: number } | undefined;
+
+    if (!availRow) {
+        res.status(400).json({ error: "No availability found for that date" });
+        return;
+    }
+
+    if (availRow.availability < npeople) {
+        res.status(400).json({ error: `Not enough availability. Only ${availRow.availability} places left` });
+        return;
+    }
+
     const stmt = db.prepare("INSERT INTO acc_bookings (accID, thedate, userID, npeople) VALUES (?, ?, 1, ?)");
     stmt.run(accID, thedate, npeople);
 

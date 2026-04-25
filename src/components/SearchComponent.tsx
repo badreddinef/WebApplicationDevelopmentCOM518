@@ -70,13 +70,13 @@ export default function SearchComponent() {
             alert("Booking successful!");
         } else {
             const data = await response.json();
-            if(response.status === 401) {
+            if (response.status === 401) {
                 alert('You must be logged in to book accommodation!');
-            } else {
+             } else {
                 alert(`Booking failed: ${data.error}`);
             }
         }
-}
+    }
 
     const resultsList = results.map(acc => (
         <div key={acc.ID}>
