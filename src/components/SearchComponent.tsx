@@ -17,6 +17,8 @@ export default function SearchComponent() {
     const [username, setUsername] = useState<string | null>(null);
     const [loginUsername, setLoginUsername] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
+    const [npeople, setNpeople] = useState(1);
+    const [thedate, setThedate] = useState("");
 
     useEffect(() => {
         async function checkLogin() {
@@ -57,13 +59,20 @@ export default function SearchComponent() {
     }
 
     async function book(accID: number) {
+        if (!thedate) {
+            alert('Please enter a date');
+            return;
+        }
+        const parts = thedate.split('-');
+        const convertedDate = parseInt(`${parts[0]!.slice(2)}${parts[1]}${parts[2]}`);
+
         const response = await fetch('/accommodation/book', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 accID: accID,
-                npeople: 1,
-                thedate: 260601
+                npeople: npeople,
+                thedate: convertedDate
             })
         });
         if (response.ok) {
@@ -84,7 +93,24 @@ export default function SearchComponent() {
             <p><strong>Type:</strong> {acc.type}</p>
             <p><strong>Location:</strong> {acc.location}</p>
             <p>{acc.description}</p>
-            <button onClick={() => book(acc.ID)}>Book</button>
+            <div>
+                <label htmlFor={`date-${acc.ID}`}>Date:</label>
+                <input
+                    id={`date-${acc.ID}`}
+                    type="date"
+                    value={thedate}
+                    onChange={(e) => setThedate(e.target.value)}
+                />
+                <label htmlFor={`npeople-${acc.ID}`}>Number of people:</label>
+                <input
+                    id={`npeople-${acc.ID}`}
+                    type="number"
+                    min="1"
+                    value={npeople}
+                    onChange={(e) => setNpeople(parseInt(e.target.value))}
+                />
+                <button onClick={() => book(acc.ID)}>Book</button>
+            </div>
         </article>
     ));
 
