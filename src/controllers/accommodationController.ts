@@ -1,4 +1,5 @@
 import type { Request, Response } from 'express';
+import xss from 'xss';
 import AccommodationDao from '../dao/accommodationDao.js';
 import BetterSqlite3 from 'better-sqlite3';
 
@@ -8,19 +9,20 @@ export default class AccommodationController {
     constructor(db: BetterSqlite3.Database) {
         this.dao = new AccommodationDao(db);
     }
-
     findByLocation(req: Request, res: Response) {
         try {
-            const results = this.dao.findByLocation(req.params.location);
+            const location = xss(req.params.location);
+            const results = this.dao.findByLocation(location);
             res.json(results);
         } catch(e) {
             res.status(500).json({ error: e });
         }
     }
-
     findByTypeAndLocation(req: Request, res: Response) {
         try {
-            const results = this.dao.findByTypeAndLocation(req.params.type, req.params.location);
+            const type = xss(req.params.type);
+            const location = xss(req.params.location);
+            const results = this.dao.findByTypeAndLocation(type, location);
             res.json(results);
         } catch(e) {
             res.status(500).json({ error: e });

@@ -79,52 +79,66 @@ export default function SearchComponent() {
     }
 
     const resultsList = results.map(acc => (
-        <div key={acc.ID}>
+        <article key={acc.ID} className="accommodation-card">
             <h3>{acc.name}</h3>
-            <p>Type: {acc.type}</p>
-            <p>Location: {acc.location}</p>
+            <p><strong>Type:</strong> {acc.type}</p>
+            <p><strong>Location:</strong> {acc.location}</p>
             <p>{acc.description}</p>
             <button onClick={() => book(acc.ID)}>Book</button>
-        </div>
+        </article>
     ));
 
     return (
         <div>
-            <h1>Places To Stay</h1>
+            <section className="login-section">
+                {username ? (
+                    <div>
+                        <p className="logged-in">Logged in as {username}</p>
+                        <button onClick={logout}>Logout</button>
+                    </div>
+                ) : (
+                    <div>
+                        <label htmlFor="username">Username:</label>
+                        <input
+                            id="username"
+                            type="text"
+                            placeholder="Username"
+                            value={loginUsername}
+                            onChange={(e) => setLoginUsername(e.target.value)}
+                        />
+                        <label htmlFor="password">Password:</label>
+                        <input
+                            id="password"
+                            type="password"
+                            placeholder="Password"
+                            value={loginPassword}
+                            onChange={(e) => setLoginPassword(e.target.value)}
+                        />
+                        <button onClick={login}>Login</button>
+                    </div>
+                )}
+            </section>
 
-            {username ? (
-                <div>
-                    <p>Logged in as {username}</p>
-                    <button onClick={logout}>Logout</button>
-                </div>
-            ) : (
-                <div>
-                    <input
-                        type="text"
-                        placeholder="Username"
-                        value={loginUsername}
-                        onChange={(e) => setLoginUsername(e.target.value)}
-                    />
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={loginPassword}
-                        onChange={(e) => setLoginPassword(e.target.value)}
-                    />
-                    <button onClick={login}>Login</button>
-                </div>
-            )}
+            <section className="search-section">
+                <h2>Search Accommodation</h2>
+                <label htmlFor="location">Location:</label>
+                <input
+                    id="location"
+                    type="text"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    placeholder="Enter location..."
+                />
+                <button onClick={search}>Search</button>
+            </section>
 
-            <h2>Search</h2>
-            <input
-                type="text"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder="Enter location..."
-            />
-            <button onClick={search}>Search</button>
-            <div>{resultsList}</div>
-            <MapComponent results={results} />
+            <section>
+                {resultsList}
+            </section>
+
+            <section>
+                <MapComponent results={results} />
+            </section>
         </div>
     );
 }
